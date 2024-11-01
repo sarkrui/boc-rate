@@ -107,4 +107,4 @@ On success:
 
 ### License
 
-This project is licensed under the [Apache-2.0 License](.LICENSE) © 2024. All Rights Reserved.
+This project is licensed under the [Apache-2.0 License](./LICENSE) © 2024. All Rights Reserved.
