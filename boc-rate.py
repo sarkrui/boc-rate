@@ -2,7 +2,7 @@
 Author: Vincent Yang
 Date: 2024-11-01 01:35:27
 LastEditors: Vincent Yang
-LastEditTime: 2024-11-01 01:54:09
+LastEditTime: 2024-11-01 02:04:22
 FilePath: /boc-rate/boc-rate.py
 Telegram: https://t.me/missuo
 GitHub: https://github.com/missuo
@@ -112,7 +112,6 @@ def get_rate():
             return jsonify({
                 "code": 400,
                 "message": "Invalid currency code format. Please provide a 3-letter currency code.",
-                "support": "OwO Network",
                 "data": None
             }), 400
         
@@ -121,7 +120,6 @@ def get_rate():
             return jsonify({
                 "code": 400,
                 "message": f"Unsupported currency code: {currency}",
-                "support": "OwO Network",
                 "data": None
             }), 400
             
@@ -133,7 +131,6 @@ def get_rate():
             return jsonify({
                 "code": 200,
                 "message": "success",
-                "support": "OwO Network",
                 "data": result["data"]
             }), 200
             
@@ -142,7 +139,6 @@ def get_rate():
             return jsonify({
                 "code": 500,
                 "message": result["error"],
-                "support": "OwO Network",
                 "data": None
             }), 500
         
@@ -151,7 +147,6 @@ def get_rate():
             return jsonify({
                 "code": 404,
                 "message": f"No exchange rate data found for currency: {currency}",
-                "support": "OwO Network",
                 "data": None
             }), 404
 
@@ -160,7 +155,6 @@ def get_rate():
         return jsonify({
             "code": 500,
             "message": f"Internal server error: {str(e)}",
-            "support": "OwO Network",
             "data": None
         }), 500
 
