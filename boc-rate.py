@@ -85,23 +85,22 @@ def get_exchange_rate(currency_code):
                 cash_selling_rate = row.xpath('./td[5]/text()')[0].strip() if row.xpath('./td[5]/text()') else ""
                 boc_conversion_rate = row.xpath('./td[6]/text()')[0].strip() if row.xpath('./td[6]/text()') else ""
 
-                # Convert to float if possible, otherwise set to None
                 try:
-                    foreign_exchange_buying_rate = float(foreign_exchange_buying_rate)
-                    foreign_exchange_selling_rate = float(foreign_exchange_selling_rate)
-                    middle_price = (foreign_exchange_buying_rate + foreign_exchange_selling_rate) / 2
+                    foreign_exchange_buying_rate = round(float(foreign_exchange_buying_rate), 2)
+                    foreign_exchange_selling_rate = round(float(foreign_exchange_selling_rate), 2)
+                    middle_price = round((foreign_exchange_buying_rate + foreign_exchange_selling_rate) / 2, 2)
                 except ValueError:
                     middle_price = None
-                
+
                 try:
-                    cash_buying_rate = float(cash_buying_rate)
-                    cash_selling_rate = float(cash_selling_rate)
-                    middle_cash_price = (cash_buying_rate + cash_selling_rate) / 2
+                    cash_buying_rate = round(float(cash_buying_rate), 2)
+                    cash_selling_rate = round(float(cash_selling_rate), 2)
+                    middle_cash_price = round((cash_buying_rate + cash_selling_rate) / 2, 2)
                 except ValueError:
                     middle_cash_price = None
 
                 try:
-                    bocConversionRate = float(boc_conversion_rate)
+                    bocConversionRate = round(float(boc_conversion_rate), 2)
                 except ValueError:
                     bocConversionRate = None
 
