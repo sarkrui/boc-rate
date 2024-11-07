@@ -78,22 +78,51 @@ def get_exchange_rate(currency_code):
         for row in rows:
             currency_name = row.xpath('./td[1]/text()')[0].strip()
             if currency_name == chinese_name:
-                # Extract data
+                # Extract data with additional calculations for middle prices
+                foreign_exchange_buying_rate = row.xpath('./td[2]/text()')[0].strip() if row.xpath('./td[2]/text()') else ""
+                cash_buying_rate = row.xpath('./td[3]/text()')[0].strip() if row.xpath('./td[3]/text()') else ""
+                foreign_exchange_selling_rate = row.xpath('./td[4]/text()')[0].strip() if row.xpath('./td[4]/text()') else ""
+                cash_selling_rate = row.xpath('./td[5]/text()')[0].strip() if row.xpath('./td[5]/text()') else ""
+                boc_conversion_rate = row.xpath('./td[6]/text()')[0].strip() if row.xpath('./td[6]/text()') else ""
+
+                # Convert to float if possible, otherwise set to None
+                try:
+                    foreign_exchange_buying_rate = float(foreign_exchange_buying_rate)
+                    foreign_exchange_selling_rate = float(foreign_exchange_selling_rate)
+                    middle_price = (foreign_exchange_buying_rate + foreign_exchange_selling_rate) / 2
+                except ValueError:
+                    middle_price = None
+                
+                try:
+                    cash_buying_rate = float(cash_buying_rate)
+                    cash_selling_rate = float(cash_selling_rate)
+                    middle_cash_price = (cash_buying_rate + cash_selling_rate) / 2
+                except ValueError:
+                    middle_cash_price = None
+
+                try:
+                    bocConversionRate = float(boc_conversion_rate)
+                except ValueError:
+                    bocConversionRate = None
+
+                # Construct data dictionary
                 data = {
                     "data": [{
                         "currencyName": currency_code,
-                        "foreignExchangeBuyingRate": row.xpath('./td[2]/text()')[0].strip() if row.xpath('./td[2]/text()') else "",
-                        "cashBuyingRate": row.xpath('./td[3]/text()')[0].strip() if row.xpath('./td[3]/text()') else "",
-                        "foreignExchangeSellingRate": row.xpath('./td[4]/text()')[0].strip() if row.xpath('./td[4]/text()') else "",
-                        "cashSellingRate": row.xpath('./td[5]/text()')[0].strip() if row.xpath('./td[5]/text()') else "",
-                        "bocConversionRate": row.xpath('./td[6]/text()')[0].strip() if row.xpath('./td[6]/text()') else "",
+                        "foreignExchangeBuyingRate": foreign_exchange_buying_rate if foreign_exchange_buying_rate else "",
+                        "cashBuyingRate": cash_buying_rate if cash_buying_rate else "",
+                        "foreignExchangeSellingRate": foreign_exchange_selling_rate if foreign_exchange_selling_rate else "",
+                        "cashSellingRate": cash_selling_rate if cash_selling_rate else "",
+                        "middlePrice": middle_price if middle_price is not None else "",
+                        "middleCashPrice": middle_cash_price if middle_cash_price is not None else "",
+                        "bocConversionRate": bocConversionRate if bocConversionRate is not None else "",
                         "releaseTime": row.xpath('./td[7]/text()')[0].strip()
                     }]
                 }
                 return data
-                
-        return None
 
+        return None
+    
     except Exception as e:
         print(f"Error: {e}")
         return None
